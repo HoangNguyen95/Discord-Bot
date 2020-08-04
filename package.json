@@ -1,0 +1,19 @@
+{
+    "name": "discord-star-citizen-bot",
+    "version": "1.0.0",
+    "description": "My First Discord Bot",
+    "main": "bot.js",
+    "author": "Hoang Nguyen",
+    "license": "ISC",
+    "dependencies": {
+        "discord.js": "^12.2.0",
+        "node-fetch": "^2.6.0"
+    },
+    "scripts": {
+        "test": "jest",
+        "start": "nodemon server.js"
+      },
+      "nodemonConfig": {
+          "ignore": ["./commands/dataList"]
+      }
+}

@@ -1,0 +1,10 @@
+{
+	"prefix": "!",
+    "token": "NDkwMzEwNjQ0ODM1NDE4MTEy.XxfkFQ.2MjcOl2Lik0DNjr-fiAfNdiTr3A",
+    "meaning_of_life": 42,
+	"passwords_array": ["please", "dont", "hack", "me"],
+	"secret_passcodes": {
+		"bank": 1234,
+		"home": 4321
+	}
+}

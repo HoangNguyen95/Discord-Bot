@@ -44,23 +44,21 @@ module.exports = {
             const reason = args[2] ? args.slice(2).join(' ') : 'Must have been a real Baka';
             message.channel.send(`${memberToMute.user.tag}, You have been muted for ${args[1]}. \nReason: ${reason}`);
             const muteDate = new Date().getTime();
+            const unMuteDate = muteDate + muteTime;
             // fs.writeFileSync('./commands/dataList/mutedList.json', JSON.stringify(addMemberToMutedList, null, 4), { flag: 'a+' }, err => {
-            //memberToMute.muteStatus = [];
+            // memberToMute.muteStatus = [];
 
-            const memberObject = {
+            const mutedMember = {
                 memberID: memberToMute.id,
-                muteTime: muteDate,
+                member: memberToMute.user.tag,
+                muteTime: unMuteDate,
                 count: 1,
                 status: 'muted',
             };
 
-            const memberList = { 'members': [] };
-
-            memberList.members.push({ memberObject });
             //     if (err) throw err;
             // });
-            // const unmuteDate = muteDate + muteTime;
-            exportFile(memberList, './commands/dataList/mutedList.json');
+            exportFile(mutedMember, './commands/dataList/mutedList.json');
         }
 
         setTimeout(function () {
@@ -92,32 +90,34 @@ module.exports = {
         }
 
         function exportFile(member, path) {
+            let memberList;
             fs.access(path, fs.F_OK, err => {
                 if (err) {
                     console.error(err);
                     return;
                 }
-                fs.readFile(path, 'utf8', function(err, data) {
+                fs.readFile(path, 'utf8', function (err, data) {
                     if (err) throw err;
 
                     if (!data) {
-                        fs.writeFile(path, JSON.stringify(member, null, 4), { flag: 'w' }, err => {
+                        memberList = { 'members': [] };
+                        memberList.members.push(member);
+                        fs.writeFile(path, JSON.stringify(memberList, null, 4), { flag: 'w' }, err => {
                             if (err) throw err;
                         });
                     }
                     else {
-                        let getMemberID;
-                        JSON.parse(data).members.map(id => {
-                            getMemberID = id.userID;
-                        });
-                        console.log(getMemberID, member.id);
-                        if (getMemberID === member.id) {
-                            fs.writeFile(path, JSON.stringify(member, null, 4), { flag: 'w+' }, err => {
+                        memberList = JSON.parse(data);
+                        const index = memberList.members.findIndex(id => id.memberID === member.memberID);
+                        if (index !== -1) {
+                            memberList.members[index] = member;
+                            fs.writeFile(path, JSON.stringify(memberList, null, 4), { flag: 'w+' }, err => {
                                 if (err) throw err;
                             });
                         }
                         else {
-                            fs.writeFile(path, JSON.stringify(member, null, 4), { flag: 'a+' }, err => {
+                            memberList.members.push(member);
+                            fs.writeFile(path, JSON.stringify(memberList, null, 4), { flag: 'w+' }, err => {
                                 if (err) throw err;
                             });
                         }

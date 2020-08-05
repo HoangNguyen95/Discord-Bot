@@ -13,12 +13,18 @@ module.exports = {
 
         if(!getMembers) return message.channel.send('No one has been muted');
 
-        if(memberToUnmute.id === getMembers.memberID) {
+        const index = getMembers.members.findIndex(id => id.memberID === memberToUnmute.id);
+
+        if(index !== -1) {
             const currentTime = new Date().getTime();
-            if(currentTime > getMembers.muteTime) {
-                const muteDuration = new Date(getMembers.muteTime - currentTime).toISOString().slice(11, -4);
-                console.log(muteDuration);
-                return message.channel.send(`${muteDuration} left`);
+            const memberMuteTime = new Date(getMembers.members[index].muteTime).getTime();
+
+            if(currentTime < memberMuteTime) {
+                const muteDuration = msToHMS(memberMuteTime - currentTime);
+                return message.channel.send(`${muteDuration} left for ${memberToUnmute.user.tag}`);
+            }
+            else {
+                return message.channel.send(`${memberToUnmute.user.tag} has already been unmuted`);
             }
         }
 
@@ -30,6 +36,21 @@ module.exports = {
             const id = matches[1];
 
             return id;
+        }
+
+        function msToHMS(duration) {
+            const days = (Math.floor(duration / (24 * 60 * 60 * 1000)));
+            const daysMS = duration % (24 * 60 * 60 * 1000);
+            const hours = Math.floor((daysMS) / (60 * 60 * 1000));
+            const hoursMS = duration % (60 * 60 * 1000);
+            const minutes = Math.floor((hoursMS) / (60 * 1000));
+            const minutesMS = duration % (60 * 1000);
+            const seconds = Math.floor((minutesMS)/(1000));
+            // seconds = (seconds < 10) ? `0 ${seconds}` : seconds;
+            // minutes = (minutes < 10) ? `0 ${minutes}` : minutes;
+            // hours = (hours < 10) ? `0 ${hours}` : hours;
+
+            return `${days}:${hours}:${minutes}:${seconds}`;
         }
     },
 };

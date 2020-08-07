@@ -1,12 +1,18 @@
 {
     "members": [
         {
-            "memberObject": {
-                "memberID": "377082055428931584",
-                "muteTime": 1596536591693,
-                "count": 1,
-                "status": "muted"
-            }
+            "memberID": "737848490629005466",
+            "member": "Drifterman#4854",
+            "muteTime": 1596859401039,
+            "count": 1,
+            "status": "muted"
+        },
+        {
+            "memberID": "377082055428931584",
+            "member": "VC | Mèo Developer#6873",
+            "muteTime": 1596619273430,
+            "count": 1,
+            "status": "muted"
         }
     ]
 }

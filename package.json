@@ -7,13 +7,16 @@
     "license": "ISC",
     "dependencies": {
         "discord.js": "^12.2.0",
-        "node-fetch": "^2.6.0"
+        "node-fetch": "^2.6.0",
+        "snoowrap": "^1.21.0"
     },
     "scripts": {
         "test": "jest",
         "start": "nodemon server.js"
-      },
-      "nodemonConfig": {
-          "ignore": ["./commands/dataList"]
-      }
+    },
+    "nodemonConfig": {
+        "ignore": [
+            "./commands/dataList"
+        ]
+    }
 }

@@ -4,9 +4,8 @@ module.exports = {
     name: 'check',
     description: '!Check',
     guildOnly: true,
-    execute (message, args) {
+    execute(message, args) {
         const memberToUnmute = message.guild.member(message.guild.members.cache.get(mentionMember(args[0])));
-
         if(!memberToUnmute) return message.channel.send('You need to mention someone');
 
         const getMembers = JSON.parse(fs.readFileSync('./commands/dataList/mutedList.json'));
@@ -39,16 +38,20 @@ module.exports = {
         }
 
         function msToHMS(duration) {
-            const days = (Math.floor(duration / (24 * 60 * 60 * 1000)));
+            let days = (Math.floor(duration / (24 * 60 * 60 * 1000)));
             const daysMS = duration % (24 * 60 * 60 * 1000);
-            const hours = Math.floor((daysMS) / (60 * 60 * 1000));
+            let hours = Math.floor((daysMS) / (60 * 60 * 1000));
             const hoursMS = duration % (60 * 60 * 1000);
-            const minutes = Math.floor((hoursMS) / (60 * 1000));
+            let minutes = Math.floor((hoursMS) / (60 * 1000));
             const minutesMS = duration % (60 * 1000);
-            const seconds = Math.floor((minutesMS)/(1000));
+            let seconds = Math.floor((minutesMS) / (1000));
             // seconds = (seconds < 10) ? `0 ${seconds}` : seconds;
             // minutes = (minutes < 10) ? `0 ${minutes}` : minutes;
             // hours = (hours < 10) ? `0 ${hours}` : hours;
+            days = (days < 10) ? `0${days}` : days;
+            hours = (hours < 10) ? `0${hours}` : hours;
+            minutes = (minutes < 10) ? `0${minutes}` : minutes;
+            seconds = (seconds < 10) ? `0${seconds}` : seconds;
 
             return `${days}:${hours}:${minutes}:${seconds}`;
         }

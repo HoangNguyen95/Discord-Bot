@@ -6,22 +6,31 @@ const r = new snoowrap({
     clientId: clientId,
     clientSecret: clientSecret,
     refreshToken: refreshToken,
-  });
+});
 
 function retrieveSeries(character, number) {
-    switch (character) {
-        case 'rui': {
-            if(number > 200) {
-                return r.getSubreddit('DomesticGirlfriend').search({ query: `daily_${character}_post_${number}`, sort:'day' });
+    try {
+        console.log(character, number);
+        switch (character) {
+            case 'rui': {
+                if (number > 358) {
+                    return r.getSubreddit('DomesticGirlfriend').search({ query: `daily_${character}_post_${number}` });
+                }
+                else {
+                    return 'No post found';
+                }
             }
-            else {
-                return 'No post found';
+            case 'hinaxnatsuo': {
+                return r.getSubreddit('DomesticGirlfriend').search({ query: `daily_${character}_reboot_${number}` });
             }
+            case 'ruixnat': {
+                return r.getSubreddit('DomesticGirlfriend').search({ query: `daily_${character}_${number}` });
+            }
+            default: return 'No daily series found';
         }
-        case 'hinaxnatsuo': {
-            return r.getSubreddit('DomesticGirlfriend').search({ query: `daily_${character}_reboot_post_${number}`, sort:'day' });
-        }
-        default: return 'No daily series found';
+    }
+    catch (err) {
+        console.log(err);
     }
 }
 

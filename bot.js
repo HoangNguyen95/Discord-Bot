@@ -29,16 +29,19 @@ client.on('message', msg => {
 	const command = client.commands.get(commandName);
 
 	try {
-		command.execute(msg, args);
+		if ((command.name === 'mute' || command.name === 'unmute' || command.name === 'kick' || command.name === 'prune') && !msg.member.hasPermission('ADMINISTRATOR')) {
+			return msg.channel.send('Sorry, you don\'t have permission to use this feature');
+		}
+		// eslint-disable-next-line curly
+		else command.execute(msg, args);
 	}
 	catch (err) {
-		console.log(err);
 		msg.reply('Invalid command');
 	}
 });
 
 client.on('messageDelete', async message => {
-	if(!message.guild) return;
+	if (!message.guild) return;
 	const fetchedLogs = await message.guild.fetchAuditLogs({
 		limit: 1,
 		type: 'MESSAGE_DELETE',
@@ -46,13 +49,13 @@ client.on('messageDelete', async message => {
 
 	const delectionLog = fetchedLogs.entries.first();
 
-	if(!delectionLog) return console.log(`A message by ${message.author.tag} was deleted, but no relevant audit logs were found.`);
+	if (!delectionLog) return console.log(`A message by ${message.author.tag} was deleted, but no relevant audit logs were found.`);
 
 	const { executor, target } = delectionLog;
 
 	console.log(delectionLog);
 
-	if(target.id === message.author.id) {
+	if (target.id === message.author.id) {
 		console.log(`A message by ${message.author.tag} was deleted by ${executor.tag}.`);
 	}
 	else {

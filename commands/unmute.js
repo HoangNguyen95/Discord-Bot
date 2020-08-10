@@ -21,7 +21,6 @@ module.exports = {
 
         if(index !== -1) {
             getMembers.members[index].status = 'unmuted';
-            console.log(getMembers);
             await memberToUnmute.roles.remove(muteRole.id);
             return message.channel.send(`${memberToUnmute.user.tag} has been unmuted`);
         }

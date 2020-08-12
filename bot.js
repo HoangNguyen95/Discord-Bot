@@ -13,7 +13,14 @@ for (const file of commandFiles) {
 }
 
 client.once('ready', () => {
+	client.user.setUsername('Best Girl');
 	console.log(`Logged in as ${client.user.tag}!`);
+	// const command = client.commands.get('daily');
+	// const testChannel = client.channels.cache.find(channel => channel.id === '735420626977685504');
+
+	// setInterval(function() {
+	// 	command.repeat(testChannel);
+	// }, 60000 * 60 * 6);
 });
 
 client.login(token);
@@ -36,6 +43,7 @@ client.on('message', msg => {
 		else command.execute(msg, args);
 	}
 	catch (err) {
+		console.log(err);
 		msg.reply('Invalid command');
 	}
 });
@@ -52,8 +60,6 @@ client.on('messageDelete', async message => {
 	if (!delectionLog) return console.log(`A message by ${message.author.tag} was deleted, but no relevant audit logs were found.`);
 
 	const { executor, target } = delectionLog;
-
-	console.log(delectionLog);
 
 	if (target.id === message.author.id) {
 		console.log(`A message by ${message.author.tag} was deleted by ${executor.tag}.`);

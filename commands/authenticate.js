@@ -1,27 +1,47 @@
 const snoowrap = require('snoowrap');
-const { userAgent, clientId, clientSecret, refreshToken } = require('../config.json');
+
+const moment = require('moment');
+
+const { userAgent, clientId, clientSecret, accessToken, refreshToken, username, password } = require('../config.json');
 
 const r = new snoowrap({
     userAgent: userAgent,
     clientId: clientId,
     clientSecret: clientSecret,
+    accessToken: accessToken,
     refreshToken: refreshToken,
+    username: username,
+    password: password,
 });
+
+async function getLatestSeries(delayInSeconds) {
+    const latestPosts = await getLatestSubmission();
+    const filtered = latestPosts.filter(post => {
+        return ((moment().unix() - post.created_utc) < delayInSeconds);
+    });
+    return filtered;
+}
+
+async function getLatestSubmission() {
+    const getSubmissions = await r.getSubreddit('DestinyTheGame').getNew();
+    const latestSubmissions = getSubmissions.map(submission => submission);
+    return latestSubmissions;
+}
+
+async function getLatest(name, subreddit) {
+    const result = await r.getSubreddit(subreddit).search({ query:`Daily ${name}`, sort: 'new', syntax: 'lucene', limit: 1 });
+    const filterResult = result.filter(filtered => {
+        return ((moment().unix() - filtered.created_utc) < 3600 * 6);
+    });
+    return filterResult;
+}
 
 async function retrieveSeries(character, number) {
     try {
         switch (character) {
             case 'rui': {
-                // await r.getUser('MattyH19').getSubmissions({ query: `daily_${character}_post_${number}`, limit: 1 }).then(console.log);
-                // await r.getUser('MattyH19').getSubmissions().fetchAll().then(sub => {
-                //     console.log(sub.length);
-                //     sub.filter(link => link.permalink.includes(`daily_${character}_post_${number}`)).map(value => console.log(value.permalink));
-                // });
                 return await r.getSubreddit('DomesticGirlfriend').search({ query: `daily_${character}_post_${number}`, syntax: 'lucene', limit: 1 });
             }
-            // case 'hinaxnatsuo': {
-            //     return r.getSubreddit('DomesticGirlfriend').search({ query: `daily_${character}_reboot_${number}` });
-            // }
             case 'ruixnat': {
                 return await r.getSubreddit('DomesticGirlfriend').search({ query: `daily_${character}_${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
             }
@@ -43,3 +63,5 @@ async function retrieveSeries(character, number) {
 }
 
 module.exports.retrieveSeries = retrieveSeries;
+module.exports.getLatestSeries = getLatestSeries;
+module.exports.getLatest = getLatest;

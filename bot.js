@@ -2,8 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const fs = require('fs');
 const schedule = require('node-schedule');
-
-require('dotenv').config(); 
+require('dotenv').config();
 
 client.commands = new Discord.Collection();
 
@@ -18,9 +17,21 @@ client.once('ready', () => {
 	client.user.setUsername('Best Girl');
 	console.log(`Logged in as ${client.user.tag}!`);
 	const command = client.commands.get('daily');
-	const testChannel = client.channels.cache.find(channel => channel.id === '676034600312766487');
+	// const testChannel = client.channels.cache.find(channel => channel.id === '735420626977685504');
+	const pinkChannel = client.channels.cache.find(channel => channel.id === '727958994894848060');
+	const mainHallChannel = client.channels.cache.find(channel => channel.id === '735420626977685504');
+
 	schedule.scheduleJob({ hour: 0, minute: 0 }, function() {
-		command.receiveLatestOrGenerateRandom(testChannel);
+		command.receiveLatestOrGenerateRandom(mainHallChannel, 'erika', 'Cuckoo');
+	});
+	schedule.scheduleJob({ hour: 2, minute: 0 }, function() {
+		command.receiveLatestOrGenerateRandom(pinkChannel, 'chizuru', 'KanojoOkarishimasu');
+	});
+	schedule.scheduleJob({ hour: 4, minute: 0 }, function() {
+		command.receiveLatestOrGenerateRandom(pinkChannel, 'mami', 'KanojoOkarishimasu');
+	});
+	schedule.scheduleJob({ hour: 6, minute: 0 }, function() {
+		command.receiveLatestOrGenerateRandom(pinkChannel, 'erika', 'Cuckoo');
 	});
 });
 

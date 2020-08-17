@@ -27,32 +27,58 @@ const r = new snoowrap({
 // }
 
 async function getLatest(name, subreddit) {
-    const result = await r.getSubreddit(subreddit).search({ query:`Daily ${name}`, sort: 'new', syntax: 'lucene', limit: 1 });
+    const result = await r.getSubreddit(subreddit).search({ query: `Daily ${name}`, sort: 'new', syntax: 'lucene', limit: 1 });
     const filterResult = result.filter(filtered => {
         return ((moment().unix() - filtered.created_utc) < 3600 * 6);
     });
     return filterResult;
 }
 
+function filterAuthor(data, author) {
+    return data.filter(value => value.author.name === author);
+}
+
+async function getTotalSeries(name, subreddit) {
+    const getTotalSubmissions = await r.getSubreddit(subreddit).search({ query: `Daily ${name}`, syntax: 'lucene' });
+    let authorSubmissions;
+    if(name === 'mami') {
+        authorSubmissions = filterAuthor(getTotalSubmissions, 'Jack-corvus');
+        return authorSubmissions;
+    }
+    authorSubmissions = filterAuthor(getTotalSubmissions, 'MattyH19');
+    return authorSubmissions;
+}
+
 async function retrieveSeries(character, number) {
+    let getResult, finalResult;
     try {
         switch (character) {
             case 'rui': {
-                return await r.getSubreddit('DomesticGirlfriend').search({ query: `daily_${character}_post_${number}`, syntax: 'lucene', limit: 1 });
+                getResult = await r.getSubreddit('DomesticGirlfriend').search({ query: `daily_${character}_post_${number}`, syntax: 'lucene', limit: 1 });
+                finalResult = filterAuthor(getResult, 'MattyH19');
+                return finalResult;
             }
             case 'ruixnat': {
-                return await r.getSubreddit('DomesticGirlfriend').search({ query: `daily_${character}_${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
+                getResult = await r.getSubreddit('DomesticGirlfriend').search({ query: `daily_${character}_${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
+                finalResult = filterAuthor(getResult, 'MattyH19');
+                return finalResult;
             }
             case 'chizuru': {
-                return await r.getSubreddit('KanojoOkarishimasu').search({ query: `daily_${character}_${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
+                getResult = await r.getSubreddit('KanojoOkarishimasu').search({ query: `daily_${character}_${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
+                finalResult = filterAuthor(getResult, 'MattyH19');
+                return finalResult;
             }
             case 'erika': {
-                return await r.getSubreddit('Cuckoo').search({ query: `daily_${character}_${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
+                getResult = await r.getSubreddit('Cuckoo').search({ query: `daily_${character}_${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
+                finalResult = filterAuthor(getResult, 'MattyH19');
+                return finalResult;
             }
             case 'mami': {
-                return await r.getSubreddit('KanojoOkarishimasu').search({ query: `daily_${character}_${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
+                getResult = await r.getSubreddit('KanojoOkarishimasu').search({ query: `daily_${character}_${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
+                finalResult = filterAuthor(getResult, 'Jack-corvus');
+                return finalResult;
             }
-            default: return 'No daily series found';
+            default: return;
         }
     }
     catch (err) {
@@ -63,3 +89,4 @@ async function retrieveSeries(character, number) {
 module.exports.retrieveSeries = retrieveSeries;
 // module.exports.getLatestSeries = getLatestSeries;
 module.exports.getLatest = getLatest;
+module.exports.getTotalSeries = getTotalSeries;

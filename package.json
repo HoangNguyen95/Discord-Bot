@@ -1,24 +1,39 @@
 {
-    "name": "discord-star-citizen-bot",
-    "version": "1.0.0",
-    "description": "My First Discord Bot",
-    "main": "bot.js",
-    "author": "Hoang Nguyen",
-    "license": "ISC",
-    "dependencies": {
-        "discord.js": "^12.2.0",
-        "moment": "^2.27.0",
-        "node-fetch": "^2.6.0",
-        "node-schedule": "^1.3.2",
-        "snoowrap": "^1.21.0"
-    },
-    "scripts": {
-        "test": "jest",
-        "start": "nodemon server.js"
-    },
-    "nodemonConfig": {
-        "ignore": [
-            "./commands/dataList"
-        ]
-    }
+  "name": "discord-star-citizen-bot",
+  "version": "1.0.0",
+  "description": "My First Discord Bot",
+  "main": "bot.js",
+  "author": "Hoang Nguyen",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.3.1",
+    "dotenv": "^8.2.0",
+    "moment": "^2.27.0",
+    "node-fetch": "^2.6.0",
+    "node-schedule": "^1.3.2",
+    "snoowrap": "^1.21.0"
+  },
+  "scripts": {
+    "test": "echo \"Deploying bot\" && exit 1",
+    "start": "node bot.js"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "./commands/dataList"
+    ]
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HoangNguyen95/Discord-Bot.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/HoangNguyen95/Discord-Bot/issues"
+  },
+  "homepage": "https://github.com/HoangNguyen95/Discord-Bot#readme",
+  "engines": {
+    "node": "12.18.0",
+    "npm": "6.14.4"
+  }
 }

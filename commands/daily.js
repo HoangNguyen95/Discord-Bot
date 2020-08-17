@@ -1,7 +1,6 @@
 const dailySeries = require('./authenticate');
 
 const Discord = require('discord.js');
-const fs = require('fs');
 
 const characters = ['rui', 'ruixnat', 'chizuru', 'mami'];
 function getRandomNumber(min, max) {

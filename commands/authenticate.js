@@ -2,31 +2,29 @@ const snoowrap = require('snoowrap');
 
 const moment = require('moment');
 
-const { userAgent, clientId, clientSecret, accessToken, refreshToken, username, password } = require('../config.json');
-
 const r = new snoowrap({
-    userAgent: userAgent,
-    clientId: clientId,
-    clientSecret: clientSecret,
-    accessToken: accessToken,
-    refreshToken: refreshToken,
-    username: username,
-    password: password,
+    userAgent: process.env.userAgent,
+    clientId: process.env.clientId,
+    clientSecret: process.env.clientSecret,
+    accessToken: process.env.accessToken,
+    refreshToken: process.env.refreshToken,
+    username: process.env.username,
+    password: process.env.password,
 });
 
-async function getLatestSeries(delayInSeconds) {
-    const latestPosts = await getLatestSubmission();
-    const filtered = latestPosts.filter(post => {
-        return ((moment().unix() - post.created_utc) < delayInSeconds);
-    });
-    return filtered;
-}
+// async function getLatestSeries(delayInSeconds) {
+//     const latestPosts = await getLatestSubmission();
+//     const filtered = latestPosts.filter(post => {
+//         return ((moment().unix() - post.created_utc) < delayInSeconds);
+//     });
+//     return filtered;
+// }
 
-async function getLatestSubmission() {
-    const getSubmissions = await r.getSubreddit('DestinyTheGame').getNew();
-    const latestSubmissions = getSubmissions.map(submission => submission);
-    return latestSubmissions;
-}
+// async function getLatestSubmission() {
+//     const getSubmissions = await r.getSubreddit('DestinyTheGame').getNew();
+//     const latestSubmissions = getSubmissions.map(submission => submission);
+//     return latestSubmissions;
+// }
 
 async function getLatest(name, subreddit) {
     const result = await r.getSubreddit(subreddit).search({ query:`Daily ${name}`, sort: 'new', syntax: 'lucene', limit: 1 });
@@ -63,5 +61,5 @@ async function retrieveSeries(character, number) {
 }
 
 module.exports.retrieveSeries = retrieveSeries;
-module.exports.getLatestSeries = getLatestSeries;
+// module.exports.getLatestSeries = getLatestSeries;
 module.exports.getLatest = getLatest;

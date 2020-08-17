@@ -1,8 +1,9 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { prefix, token } = require('./config.json');
 const fs = require('fs');
 const schedule = require('node-schedule');
+
+require('dotenv').config(); 
 
 client.commands = new Discord.Collection();
 
@@ -18,28 +19,18 @@ client.once('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
 	const command = client.commands.get('daily');
 	const testChannel = client.channels.cache.find(channel => channel.id === '676034600312766487');
-	// const delaySeconds = 30;
-	// setInterval(function() {
-	// 	command.receiveLatest(testChannel);
-	// 	// else {
-	// 	// 	console.log('Found it');
-	// 	// 	setTimeout(function() {
-	// 	// 		command.repeat(testChannel);
-	// 	// 	}, 60 * 1000);
-	// 	// }
-	// }, delaySeconds * 1000);
 	schedule.scheduleJob({ hour: 0, minute: 0 }, function() {
 		command.receiveLatestOrGenerateRandom(testChannel);
 	});
 });
 
-client.login(token);
+client.login(process.env.CLIENT_TOKEN);
 
 client.on('message', msg => {
 
-	if (!msg.content.startsWith(`${prefix}` || msg.author.bot)) return;
+	if (!msg.content.startsWith(`${process.env.PREFIX}` || msg.author.bot)) return;
 
-	const args = msg.content.slice(prefix.length).trim().split(/ +/);
+	const args = msg.content.slice(process.env.PREFIX.length).trim().split(/ +/);
 	const commandName = args.shift().toLowerCase();
 
 	if (!client.commands.has(commandName)) return;

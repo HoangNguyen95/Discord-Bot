@@ -24,10 +24,10 @@ client.once('ready', () => {
 	schedule.scheduleJob({ hour: 0, minute: 0 }, function() {
 		command.receiveLatestOrGenerateRandom(mainHallChannel, 'erika', 'Cuckoo');
 	});
-	schedule.scheduleJob({ hour: 2, minute: 0 }, function() {
+	schedule.scheduleJob({ hour: 1, minute: 0 }, function() {
 		command.receiveLatestOrGenerateRandom(pinkChannel, 'chizuru', 'KanojoOkarishimasu');
 	});
-	schedule.scheduleJob({ hour: 4, minute: 0 }, function() {
+	schedule.scheduleJob({ hour: 1, minute: 30 }, function() {
 		command.receiveLatestOrGenerateRandom(pinkChannel, 'mami', 'KanojoOkarishimasu');
 	});
 	schedule.scheduleJob({ hour: 6, minute: 0 }, function() {

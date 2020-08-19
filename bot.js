@@ -21,18 +21,21 @@ client.once('ready', () => {
 	const pinkChannel = client.channels.cache.find(channel => channel.id === '727958994894848060');
 	const mainHallChannel = client.channels.cache.find(channel => channel.id === '735420626977685504');
 
-	schedule.scheduleJob({ hour: 0, minute: 0 }, function() {
+	schedule.scheduleJob({ hour: 0, minute: 0 }, () => {
 		command.receiveLatestOrGenerateRandom(mainHallChannel, 'erika', 'Cuckoo');
 	});
-	schedule.scheduleJob({ hour: 1, minute: 0 }, function() {
+	schedule.scheduleJob({ hour: 1, minute: 0 }, () => {
 		command.receiveLatestOrGenerateRandom(pinkChannel, 'chizuru', 'KanojoOkarishimasu');
 	});
-	schedule.scheduleJob({ hour: 1, minute: 30 }, function() {
+	schedule.scheduleJob({ hour: 1, minute: 30 }, () => {
 		command.receiveLatestOrGenerateRandom(pinkChannel, 'mami', 'KanojoOkarishimasu');
 	});
-	schedule.scheduleJob({ hour: 6, minute: 0 }, function() {
+	schedule.scheduleJob({ hour: 6, minute: 0 }, () => {
 		command.receiveLatestOrGenerateRandom(pinkChannel, 'erika', 'Cuckoo');
 	});
+	schedule.scheduleJob({ hour: 15, minute: 0 }, () => {
+		command.receiveLatestOrGenerateRandom(pinkChannel, 'ruka', 'KanojoOkarishimasu');
+	})
 });
 
 client.login(process.env.CLIENT_TOKEN);

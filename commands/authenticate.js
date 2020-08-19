@@ -45,6 +45,10 @@ async function getTotalSeries(name, subreddit) {
         authorSubmissions = filterAuthor(getTotalSubmissions, 'Jack-corvus');
         return authorSubmissions;
     }
+    else if (name === 'ruka') {
+        authorSubmissions = filterAuthor(getTotalSubmissions, 'chara129');
+        return authorSubmissions;
+    }
     authorSubmissions = filterAuthor(getTotalSubmissions, 'MattyH19');
     return authorSubmissions;
 }
@@ -54,28 +58,33 @@ async function retrieveSeries(character, number) {
     try {
         switch (character) {
             case 'rui': {
-                getResult = await r.getSubreddit('DomesticGirlfriend').search({ query: `daily_${character}_post_${number}`, syntax: 'lucene', limit: 1 });
+                getResult = await r.getSubreddit('DomesticGirlfriend').search({ query: `Daily ${character} Post ${number}`, syntax: 'lucene', limit: 1 });
                 finalResult = filterAuthor(getResult, 'MattyH19');
                 return finalResult;
             }
             case 'ruixnat': {
-                getResult = await r.getSubreddit('DomesticGirlfriend').search({ query: `daily_${character}_${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
+                getResult = await r.getSubreddit('DomesticGirlfriend').search({ query: `Daily ${character} ${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
                 finalResult = filterAuthor(getResult, 'MattyH19');
                 return finalResult;
             }
             case 'chizuru': {
-                getResult = await r.getSubreddit('KanojoOkarishimasu').search({ query: `daily_${character}_${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
+                getResult = await r.getSubreddit('KanojoOkarishimasu').search({ query: `Daily ${character} ${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
                 finalResult = filterAuthor(getResult, 'MattyH19');
                 return finalResult;
             }
             case 'erika': {
-                getResult = await r.getSubreddit('Cuckoo').search({ query: `daily_${character}_${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
+                getResult = await r.getSubreddit('Cuckoo').search({ query: `Daily ${character} ${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
                 finalResult = filterAuthor(getResult, 'MattyH19');
                 return finalResult;
             }
             case 'mami': {
-                getResult = await r.getSubreddit('KanojoOkarishimasu').search({ query: `daily_${character}_${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
+                getResult = await r.getSubreddit('KanojoOkarishimasu').search({ query: `Daily ${character} ${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
                 finalResult = filterAuthor(getResult, 'Jack-corvus');
+                return finalResult;
+            }
+            case 'ruka': {
+                getResult = await r.getSubreddit('KanojoOkarishimasu').search({ query: `Daily ${character} ${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
+                finalResult = filterAuthor(getResult, 'chara129');
                 return finalResult;
             }
             default: return;

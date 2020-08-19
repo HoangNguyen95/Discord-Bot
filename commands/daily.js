@@ -18,6 +18,7 @@ async function getPostNumber(name) {
         case 'chizuru': return getRandomNumber(1, await upToDateSeries(name, 'KanojoOkarishimasu'));
         case 'erika': return getRandomNumber(1, await upToDateSeries(name, 'Cuckoo'));
         case 'mami': return getRandomNumber(1, await upToDateSeries(name, 'KanojoOkarishimasu'));
+        case 'ruka': return getRandomNumber(1, await upToDateSeries(name, 'KanojoOkarishimasu'));
         // case 'hinaxnatsuo': return getRandomNumber(1, 135);
         default: break;
     }
@@ -61,6 +62,7 @@ async function generateRandomOrSpecificPost(character, number) {
 
 async function upToDateSeries(name, subReddit) {
     const getResult = await dailySeries.getTotalSeries(name, subReddit);
+    if(getResult.length == 0) return;
     return getResult.length;
 }
 

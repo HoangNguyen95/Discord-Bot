@@ -19,7 +19,7 @@ client.once('ready', () => {
 	const command = client.commands.get('daily');
 	// const testChannel = client.channels.cache.find(channel => channel.id === '735420626977685504');
 	const pinkChannel = client.channels.cache.find(channel => channel.id === '727958994894848060');
-	const mainHallChannel = client.channels.cache.find(channel => channel.id === '735420626977685504');
+	const mainHallChannel = client.channels.cache.find(channel => channel.id === '676034600312766487');
 
 	schedule.scheduleJob({ hour: 0, minute: 0 }, () => {
 		command.receiveLatestOrGenerateRandom(mainHallChannel, 'erika', 'Cuckoo');

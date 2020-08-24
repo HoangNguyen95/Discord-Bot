@@ -18,13 +18,13 @@ async function getPostNumber(name) {
         case 'chizuru': return getRandomNumber(1, await upToDateSeries(name, 'KanojoOkarishimasu'));
         case 'erika': return getRandomNumber(1, await upToDateSeries(name, 'Cuckoo'));
         case 'mami': return getRandomNumber(1, await upToDateSeries(name, 'KanojoOkarishimasu'));
-        case 'ruka': return getRandomNumber(1, await upToDateSeries(name, 'KanojoOkarishimasu'));
+        case 'ruka': return getRandomNumber(2, await upToDateSeries(name, 'KanojoOkarishimasu'));
         // case 'hinaxnatsuo': return getRandomNumber(1, 135);
         default: break;
     }
 }
 
-const seriesEmbed = function (post, newest) {
+const seriesEmbed = function(post, newest) {
     const messageEmbed = new Discord.MessageEmbed();
 
     messageEmbed.setTitle(post.title);
@@ -36,10 +36,10 @@ const seriesEmbed = function (post, newest) {
         'https://www.redditstatic.com/desktop2x/img/favicon/favicon-32x32.png',
     );
     if (newest) {
-        messageEmbed.setDescription(`${post.author.name} just submitted a new post. Look at our best girl!!!`);
+        messageEmbed.setDescription(`Look what I found, ${post.author.name} just submitted a new post. Click the link and support this amazing work!!!`);
     }
     else {
-        messageEmbed.setDescription('Best girl moment!!!');
+        messageEmbed.setDescription('Random girl moment!!!');
     }
     return messageEmbed;
 };
@@ -62,8 +62,14 @@ async function generateRandomOrSpecificPost(character, number) {
 
 async function upToDateSeries(name, subReddit) {
     const getResult = await dailySeries.getTotalSeries(name, subReddit);
-    if(getResult.length == 0) return;
+    if (getResult.length === 0) return;
     return getResult.length;
+}
+
+function discardMentionedUser(message) {
+    const filterArgument = message.filter(argument => !argument.match(/^<@!?(\d+)>$/)).map(arg => arg);
+    console.log(filterArgument);
+    return filterArgument;
 }
 
 module.exports = {
@@ -71,7 +77,8 @@ module.exports = {
     description: '!Daily',
     guildOnly: true,
     async execute(message, args) {
-        if (!args[0]) {
+        const getMessage = discardMentionedUser(args);
+        if (!getMessage[0]) {
             seriesName = characters[getRandomNumber(0, characters.length)];
             postNumber = await getPostNumber(seriesName);
         }
@@ -81,16 +88,11 @@ module.exports = {
                 seriesName = 'ruixnat';
             }
             else {
-                seriesName = args[0].toLowerCase();
+                seriesName = getMessage[0].toLowerCase();
+                const grabNumber = getMessage.toString().match(/\d+/g);
+                postNumber = !grabNumber ? await getPostNumber(seriesName) : grabNumber[0];
             }
-
-            const extractNumber = message.content.match(/(\d+)/);
-
-            postNumber = !extractNumber ? await getPostNumber(seriesName) : extractNumber[0];
         }
-
-        console.log(seriesName, postNumber);
-
         fetched = generateRandomOrSpecificPost(seriesName, postNumber);
         fetched.then(submission => {
             if (submission.length === 0) return message.channel.send(`Daily ${seriesName[0].toUpperCase() + seriesName.slice(1)} Post #${postNumber} doesn't existed, author must has been a baka at counting!`);

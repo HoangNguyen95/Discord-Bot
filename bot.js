@@ -17,25 +17,28 @@ client.once('ready', () => {
 	client.user.setUsername('Best Girl');
 	console.log(`Logged in as ${client.user.tag}!`);
 	const command = client.commands.get('daily');
-	// const testChannel = client.channels.cache.find(channel => channel.id === '735420626977685504');
 	const pinkChannel = client.channels.cache.find(channel => channel.id === '727958994894848060');
 	const mainHallChannel = client.channels.cache.find(channel => channel.id === '676034600312766487');
+	// const testChannel = client.channels.cache.find(channel => channel.id === '735420626977685504');
 
 	schedule.scheduleJob({ hour: 0, minute: 0 }, () => {
 		command.receiveLatestOrGenerateRandom(mainHallChannel, 'erika', 'Cuckoo');
 	});
+	schedule.scheduleJob({ hour: 12, minute: 0 }, () => {
+		command.receiveLatestOrGenerateRandom(pinkChannel, 'erika', 'Cuckoo');
+	});
 	schedule.scheduleJob({ hour: 1, minute: 0 }, () => {
 		command.receiveLatestOrGenerateRandom(pinkChannel, 'chizuru', 'KanojoOkarishimasu');
 	});
-	schedule.scheduleJob({ hour: 1, minute: 30 }, () => {
-		command.receiveLatestOrGenerateRandom(pinkChannel, 'mami', 'KanojoOkarishimasu');
-	});
 	schedule.scheduleJob({ hour: 6, minute: 0 }, () => {
-		command.receiveLatestOrGenerateRandom(pinkChannel, 'erika', 'Cuckoo');
+		command.receiveLatestOrGenerateRandom(pinkChannel, 'mami', 'KanojoOkarishimasu');
 	});
 	schedule.scheduleJob({ hour: 15, minute: 0 }, () => {
 		command.receiveLatestOrGenerateRandom(pinkChannel, 'ruka', 'KanojoOkarishimasu');
-	})
+	});
+	// schedule.scheduleJob({ hour: 16, minute: 35 }, () => {
+	// 	command.receiveLatestOrGenerateRandom(testChannel, 'ruka', 'KanojoOkarishimasu');
+	// });
 });
 
 client.login(process.env.CLIENT_TOKEN);

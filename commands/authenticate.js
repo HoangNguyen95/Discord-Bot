@@ -12,6 +12,8 @@ const r = new snoowrap({
     password: process.env.password,
 });
 
+const authors = ['Jack-corvus', 'chara129', 'MattyH19'];
+
 // async function getLatestSeries(delayInSeconds) {
 //     const latestPosts = await getLatestSubmission();
 //     const filtered = latestPosts.filter(post => {
@@ -29,7 +31,7 @@ const r = new snoowrap({
 async function getLatest(name, subreddit) {
     const result = await r.getSubreddit(subreddit).search({ query: `Daily ${name}`, sort: 'new', syntax: 'lucene', limit: 1 });
     const filterResult = result.filter(filtered => {
-        return ((moment().unix() - filtered.created_utc) < 3600 * 6);
+        return ((moment().unix() - filtered.created_utc) < 3600 * 6 && authors.find(filtered.author));
     });
     return filterResult;
 }

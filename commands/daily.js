@@ -2,31 +2,34 @@ const dailySeries = require('./authenticate');
 
 const Discord = require('discord.js');
 
-const characters = ['rui', 'ruixnat', 'chizuru', 'mami'];
+const fs = require('fs');
+
+const getRawData = fs.readFileSync('./commands/data/data.json');
+
+const getParseData = JSON.parse(getRawData);
 
 let fetched;
+
+let seriesName, postNumber, getSubByName;
+
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
-
-let seriesName, postNumber;
 
 async function getPostNumber(name) {
     switch (name) {
         case 'rui': return getRandomNumber(201, 500);
         case 'ruixnat': return getRandomNumber(26, 333);
-        case 'chizuru': return getRandomNumber(1, await upToDateSeries(name, 'KanojoOkarishimasu'));
-        case 'erika': return getRandomNumber(1, await upToDateSeries(name, 'Cuckoo'));
-        case 'mami': return getRandomNumber(1, await upToDateSeries(name, 'KanojoOkarishimasu'));
-        case 'ruka': return getRandomNumber(2, await upToDateSeries(name, 'KanojoOkarishimasu'));
-        // case 'hinaxnatsuo': return getRandomNumber(1, 135);
+        case 'chizuru': return getRandomNumber(1, await upToDateSeries(name));
+        case 'erika': return getRandomNumber(1, await upToDateSeries(name));
+        case 'mami': return getRandomNumber(1, await upToDateSeries(name));
+        case 'ruka': return getRandomNumber(2, await upToDateSeries(name));
         default: break;
     }
 }
 
 const seriesEmbed = function(post, newest) {
     const messageEmbed = new Discord.MessageEmbed();
-
     messageEmbed.setTitle(post.title);
     messageEmbed.setURL(`https://www.reddit.com${post.permalink}`);
     messageEmbed.setColor('#0099ff');
@@ -55,13 +58,25 @@ async function fetchLatest(name, subreddit) {
     }
 }
 
-async function generateRandomOrSpecificPost(character, number) {
-    const getSubmission = await dailySeries.retrieveSeries(character, number);
+function getRandomCharacter() {
+    const getCharacter = getParseData.listOfSeries.map(character => character.name);
+    const randomCharacter = getCharacter[getRandomNumber(0, getCharacter.length)];
+    return randomCharacter;
+}
+
+function getSubReddit(name) {
+    const getSubreddit = getParseData.listOfSeries.filter(filterSub => filterSub.name === name).map(getSub => getSub.sub);
+    return getSubreddit;
+}
+
+async function generateRandomOrSpecificPost(character, number, subreddit) {
+    const getSubmission = await dailySeries.retrieveSeries(character, number, subreddit);
     return getSubmission;
 }
 
-async function upToDateSeries(name, subReddit) {
-    const getResult = await dailySeries.getTotalSeries(name, subReddit);
+async function upToDateSeries(name) {
+    getSubByName = getSubReddit(name);
+    const getResult = await dailySeries.getTotalSeries(name, getSubByName[0]);
     if (getResult.length === 0) return;
     return getResult.length;
 }
@@ -79,7 +94,7 @@ module.exports = {
     async execute(message, args) {
         const getMessage = discardMentionedUser(args);
         if (!getMessage[0]) {
-            seriesName = characters[getRandomNumber(0, characters.length)];
+            seriesName = getRandomCharacter();
             postNumber = await getPostNumber(seriesName);
         }
         else {
@@ -93,7 +108,8 @@ module.exports = {
                 postNumber = !grabNumber ? await getPostNumber(seriesName) : grabNumber[0];
             }
         }
-        fetched = generateRandomOrSpecificPost(seriesName, postNumber);
+        getSubByName = getSubReddit(seriesName);
+        fetched = generateRandomOrSpecificPost(seriesName, postNumber, getSubByName[0]);
         fetched.then(submission => {
             if (submission.length === 0) return message.channel.send(`Daily ${seriesName[0].toUpperCase() + seriesName.slice(1)} Post #${postNumber} doesn't existed, author must has been a baka at counting!`);
             submission.map(post => {
@@ -101,12 +117,13 @@ module.exports = {
             });
         });
     },
-    receiveLatestOrGenerateRandom(channel, name, subreddit) {
-        fetched = fetchLatest(name, subreddit);
+    receiveLatestOrGenerateRandom(channel, name) {
+        getSubByName = getSubReddit(name);
+        fetched = fetchLatest(name, getSubByName[0]);
         fetched.then(async submission => {
             if (submission.length === 0) {
-                postNumber = await getPostNumber(name);
-                fetched = generateRandomOrSpecificPost(name, postNumber);
+                getSubByName = getSubReddit(name);
+                fetched = generateRandomOrSpecificPost(name, postNumber, getSubByName[0]);
                 fetched.then(value => {
                     if (value.length === 0) return;
                     value.map(post => {

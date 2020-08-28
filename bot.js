@@ -22,19 +22,19 @@ client.once('ready', () => {
 	// const testChannel = client.channels.cache.find(channel => channel.id === '735420626977685504');
 
 	schedule.scheduleJob({ hour: 0, minute: 0 }, () => {
-		command.receiveLatestOrGenerateRandom(mainHallChannel, 'erika', 'Cuckoo');
+		command.receiveLatestOrGenerateRandom(mainHallChannel, 'erika');
 	});
 	schedule.scheduleJob({ hour: 12, minute: 0 }, () => {
-		command.receiveLatestOrGenerateRandom(pinkChannel, 'erika', 'Cuckoo');
+		command.receiveLatestOrGenerateRandom(pinkChannel, 'erika');
 	});
 	schedule.scheduleJob({ hour: 1, minute: 0 }, () => {
-		command.receiveLatestOrGenerateRandom(pinkChannel, 'chizuru', 'KanojoOkarishimasu');
+		command.receiveLatestOrGenerateRandom(pinkChannel, 'chizuru');
 	});
 	schedule.scheduleJob({ hour: 6, minute: 0 }, () => {
-		command.receiveLatestOrGenerateRandom(pinkChannel, 'mami', 'KanojoOkarishimasu');
+		command.receiveLatestOrGenerateRandom(pinkChannel, 'mami');
 	});
 	schedule.scheduleJob({ hour: 15, minute: 0 }, () => {
-		command.receiveLatestOrGenerateRandom(pinkChannel, 'ruka', 'KanojoOkarishimasu');
+		command.receiveLatestOrGenerateRandom(pinkChannel, 'ruka');
 	});
 	// schedule.scheduleJob({ hour: 16, minute: 35 }, () => {
 	// 	command.receiveLatestOrGenerateRandom(testChannel, 'ruka', 'KanojoOkarishimasu');

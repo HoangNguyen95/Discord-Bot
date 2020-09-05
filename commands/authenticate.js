@@ -32,10 +32,8 @@ const authors = JSON.parse(fs.readFileSync('./commands/data/author.json'));
 
 async function getLatest(name, subreddit) {
     const result = await r.getSubreddit(subreddit).search({ query: `Daily ${name}`, sort: 'new', syntax: 'lucene', limit: 1 });
-    const filterResult = result.filter(filtered => {
-        return ((moment().unix() - filtered.created_utc) < 3600 * 6 && authors.find(author => author === filtered.author.name));
-    });
-    return filterResult;
+    const getLatestPost = result.filter(filtered => (((moment().unix() - filtered.created_utc) < 3600 * 6) && authors.seriesAuthor.filter(specificAuthor => filtered.author.name === specificAuthor.name)));
+    return getLatestPost;
 }
 
 function filterAuthor(data) {
@@ -52,7 +50,6 @@ async function retrieveSeries(character, number, subreddit) {
     try {
         const getResult = await r.getSubreddit(subreddit).search({ query: `Daily ${character} ${number}`, restrictSr: true, syntax: 'lucene', limit: 1 });
         const finalResult = filterAuthor(getResult);
-        console.log(finalResult);
         return finalResult;
     }
     catch (err) {

@@ -16,6 +16,16 @@ function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+function getRandomDescription(author) {
+    if (!author) return '';
+    const desc = [
+        `Look what I found, ${author} just submitted a new post. Click the link and support this amazing work!`,
+        `Check out this new work from ${author}, go and upvote this series!`,
+        `${author}'s waifu is shining, she must has been amazing recently`,
+    ];
+    return desc[getRandomNumber(0, desc.length)];
+}
+
 async function getPostNumber(name) {
     switch (name) {
         case 'rui': return getRandomNumber(201, 500);
@@ -39,7 +49,7 @@ const seriesEmbed = function(post, newest) {
         'https://www.redditstatic.com/desktop2x/img/favicon/favicon-32x32.png',
     );
     if (newest) {
-        messageEmbed.setDescription(`Look what I found, ${post.author.name} just submitted a new post. Click the link and support this amazing work!!!`);
+        messageEmbed.setDescription(getRandomDescription(post.author.name));
     }
     else {
         messageEmbed.setDescription('Random girl moment!!!');
@@ -123,6 +133,7 @@ module.exports = {
         fetched.then(async submission => {
             if (submission.length === 0) {
                 getSubByName = getSubReddit(name);
+                postNumber = await getPostNumber(name);
                 fetched = generateRandomOrSpecificPost(name, postNumber, getSubByName[0]);
                 fetched.then(value => {
                     if (value.length === 0) return;

@@ -25,6 +25,9 @@ client.once('ready', () => {
 		command.receiveLatestOrGenerateRandom(mainHallChannel, 'erika');
 	});
 	schedule.scheduleJob({ hour: 12, minute: 0 }, () => {
+		command.receiveLatestOrGenerateRandom(mainHallChannel, 'erika');
+	});
+	schedule.scheduleJob({ hour: 3, minute: 0 }, () => {
 		command.receiveLatestOrGenerateRandom(pinkChannel, 'erika');
 	});
 	schedule.scheduleJob({ hour: 1, minute: 0 }, () => {
@@ -36,9 +39,6 @@ client.once('ready', () => {
 	schedule.scheduleJob({ hour: 15, minute: 0 }, () => {
 		command.receiveLatestOrGenerateRandom(pinkChannel, 'ruka');
 	});
-	// schedule.scheduleJob({ hour: 16, minute: 35 }, () => {
-	// 	command.receiveLatestOrGenerateRandom(testChannel, 'ruka', 'KanojoOkarishimasu');
-	// });
 });
 
 client.login(process.env.CLIENT_TOKEN);

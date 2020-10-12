@@ -132,7 +132,6 @@ module.exports = {
         fetched = fetchLatest(name, getSubByName[0]);
         fetched.then(async submission => {
             if (submission.length === 0) {
-                getSubByName = getSubReddit(name);
                 postNumber = await getPostNumber(name);
                 fetched = generateRandomOrSpecificPost(name, postNumber, getSubByName[0]);
                 fetched.then(value => {

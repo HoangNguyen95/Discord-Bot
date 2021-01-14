@@ -2,7 +2,7 @@ const snoowrap = require('snoowrap');
 
 const moment = require('moment');
 
-const fs = require('fs');
+// const fs = require('fs');
 
 const r = new snoowrap({
     userAgent: process.env.userAgent,
@@ -14,7 +14,7 @@ const r = new snoowrap({
     password: process.env.password,
 });
 
-const authors = JSON.parse(fs.readFileSync('./commands/data/author.json'));
+// const authors = JSON.parse(fs.readFileSync('./commands/data/author.json'));
 
 // async function getLatestSeries(delayInSeconds) {
 //     const latestPosts = await getLatestSubmission();
@@ -30,14 +30,18 @@ const authors = JSON.parse(fs.readFileSync('./commands/data/author.json'));
 //     return latestSubmissions;
 // }
 
+const authors = ['MattyH19', 'chara129', 'Jack-corvus'];
+
 async function getLatest(name, subreddit) {
-    const result = await r.getSubreddit(subreddit).search({ query: `Daily ${name}`, sort: 'new', syntax: 'lucene', limit: 1 });
-    const getLatestPost = result.filter(filtered => (((moment().unix() - filtered.created_utc) < 3600 * 6) && authors.seriesAuthor.filter(specificAuthor => filtered.author.name === specificAuthor.name)));
-    return getLatestPost;
+    const result = await r.getSubreddit(subreddit).search({ query: `Daily ${name}`, restrictSr: true, sort: 'new', syntax: 'lucene', limit: 1 });
+    const getLatestPost = result.filter(filtered => ((moment().unix() - filtered.created_utc) < 3600 * 6));
+    const getAuthorPost = filterAuthor(getLatestPost);
+    return getAuthorPost;
 }
 
-function filterAuthor(data) {
-    return data.filter(author => authors.seriesAuthor.filter(specificAuthor => author.author.name === specificAuthor.name));
+async function filterAuthor(data) {
+    const post = await data.filter(author => authors.includes(author.author.name));
+    return post;
 }
 
 async function getTotalSeries(name, subreddit) {

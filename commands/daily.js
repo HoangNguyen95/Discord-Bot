@@ -93,7 +93,6 @@ async function upToDateSeries(name) {
 
 function discardMentionedUser(message) {
     const filterArgument = message.filter(argument => !argument.match(/^<@!?(\d+)>$/)).map(arg => arg);
-    console.log(filterArgument);
     return filterArgument;
 }
 

@@ -11,18 +11,22 @@
     "moment": "^2.27.0",
     "node-fetch": "^2.6.0",
     "node-schedule": "^1.3.2",
+    "nodemon": "^2.0.6",
     "snoowrap": "^1.21.0"
   },
   "scripts": {
     "test": "echo \"Deploying bot\" && exit 1",
-    "start": "node bot.js"
+    "start": "nodemon bot.js",
+    "build": "tsc --build tsconfig.json"
   },
   "nodemonConfig": {
     "ignore": [
       "./commands/dataList"
     ]
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "typescript": "^4.0.3"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/HoangNguyen95/Discord-Bot.git"

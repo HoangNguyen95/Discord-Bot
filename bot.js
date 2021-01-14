@@ -27,9 +27,6 @@ client.once('ready', () => {
 	schedule.scheduleJob({ hour: 12, minute: 0 }, () => {
 		command.receiveLatestOrGenerateRandom(mainHallChannel, 'erika');
 	});
-	schedule.scheduleJob({ hour: 3, minute: 0 }, () => {
-		command.receiveLatestOrGenerateRandom(pinkChannel, 'erika');
-	});
 	schedule.scheduleJob({ hour: 1, minute: 0 }, () => {
 		command.receiveLatestOrGenerateRandom(pinkChannel, 'chizuru');
 	});
